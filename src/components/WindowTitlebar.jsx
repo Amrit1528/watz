@@ -61,7 +61,7 @@ export default function WindowTitlebar() {
           minWidth: 0,
         }}
       >
-        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: 2, color: "var(--text3)", fontFamily: "var(--font-display)", whiteSpace: "nowrap" }}>watz</span>
+        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: 2, color: "var(--text3)", fontFamily: "var(--font-display)", whiteSpace: "nowrap" }}>MadCineAma</span>
         <span style={{ fontSize: 9, color: "var(--text4)", marginTop: 1, fontFamily: "var(--font-sans)", whiteSpace: "nowrap" }}>Everything You Love. All in One Place.</span>
       </div>
 

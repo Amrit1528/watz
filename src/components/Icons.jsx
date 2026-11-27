@@ -1,7 +1,7 @@
-export const WatzLogo = ({ style }) => (
+export const MadCineAmaLogo = ({ style }) => (
   <img
     src="./logo.svg"
-    alt="watz"
+    alt="madcineama"
     width="44"
     height="44"
     style={{ width: "100%", height: "100%", display: "block", ...style }}
