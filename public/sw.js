@@ -1,7 +1,7 @@
-// Watz PWA service worker — cache-first with network fallback.
+// MadCineAma PWA service worker — cache-first with network fallback.
 // Served from /sw.js; registered by index.html at startup.
 
-const CACHE = 'watz-v1';
+const CACHE = 'madcineama-v1';
 const CACHE_URLS = [
   '/',
   '/index.html',

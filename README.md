@@ -1,20 +1,20 @@
-[![Downloads@latest](https://img.shields.io/github/downloads/truelockmc/streambert/latest/total?style=for-the-badge)](https://codeberg.org/truelockmc/streambert/releases/latest/)
-[![Release Version Badge](https://img.shields.io/github/v/release/truelockmc/streambert?style=for-the-badge)](https://github.com/truelockmc/streambert/releases)
-[![Issues Badge](https://img.shields.io/github/issues/truelockmc/streambert?style=for-the-badge)](https://github.com/truelockmc/streambert/issues)
-[![Closed Issues Badge](https://img.shields.io/github/issues-closed/truelockmc/streambert?color=%238256d0&style=for-the-badge)](https://github.com/truelockmc/streambert/issues?q=is%3Aissue+is%3Aclosed)<br>
+[![Downloads@latest](https://img.shields.io/github/downloads/truelockmc/madcineama/latest/total?style=for-the-badge)](https://codeberg.org/truelockmc/madcineama/releases/latest/)
+[![Release Version Badge](https://img.shields.io/github/v/release/truelockmc/madcineama?style=for-the-badge)](https://github.com/truelockmc/madcineama/releases)
+[![Issues Badge](https://img.shields.io/github/issues/truelockmc/madcineama?style=for-the-badge)](https://github.com/truelockmc/madcineama/issues)
+[![Closed Issues Badge](https://img.shields.io/github/issues-closed/truelockmc/madcineama?color=%238256d0&style=for-the-badge)](https://github.com/truelockmc/madcineama/issues?q=is%3Aissue+is%3Aclosed)<br>
 
-[![GitHub](https://img.shields.io/badge/GitHub-truelockmc%2Fstreambert-181717?style=for-the-badge&logo=github)](https://github.com/truelockmc/streambert)
-[![Codeberg](https://img.shields.io/badge/Codeberg-truelockmc%2Fstreambert-2185D0?style=for-the-badge&logo=codeberg)](https://codeberg.org/truelockmc/streambert)
-[![AUR Version](https://img.shields.io/aur/version/streambert-bin?style=for-the-badge&logo=archlinux)](https://aur.archlinux.org/packages/streambert-bin)
-# Streambert
+[![GitHub](https://img.shields.io/badge/GitHub-truelockmc%2Fmadcineama-181717?style=for-the-badge&logo=github)](https://github.com/truelockmc/madcineama)
+[![Codeberg](https://img.shields.io/badge/Codeberg-truelockmc%2Fmadcineama-2185D0?style=for-the-badge&logo=codeberg)](https://codeberg.org/truelockmc/madcineama)
+[![AUR Version](https://img.shields.io/aur/version/madcineama-bin?style=for-the-badge&logo=archlinux)](https://aur.archlinux.org/packages/madcineama-bin)
+# MadCineAma
 A cross-platform Electron Desktop App to stream and download any Movie, TV Series or Anime in the World. Zero Ads and Tracking[*](#privacy-disclaimer) <br></br>
-<a href="https://trendshift.io/repositories/31115" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/31115" alt="truelockmc%2Fstreambert | Trendshift" width="250" height="55"/></a>
+<a href="https://trendshift.io/repositories/31115" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/31115" alt="truelockmc%2Fmadcineama | Trendshift" width="250" height="55"/></a>
 
 ![Logo](public/logo.svg)
 
 [Installation](#requirements)
 
-## Why Streambert?
+## Why MadCineAma?
 - 🎦 **Streaming:** Stream any Movie, Anime or TV Series from around the World.
 - 📥 **Downloading:** Download anything you want to watch.
 - 📃 **Subtitles:** Download and manage Subtitles.
@@ -34,7 +34,7 @@ A cross-platform Electron Desktop App to stream and download any Movie, TV Serie
 ![Download Subtitles](screenshots/subs.png)
 ![Download Everything](screenshots/download.png)
 ---
-[![Stargazers](https://reporoster.com/stars/dark/truelockmc/streambert)](https://github.com/truelockmc/streambert/stargazers)
+[![Stargazers](https://reporoster.com/stars/dark/truelockmc/madcineama)](https://github.com/truelockmc/madcineama/stargazers)
 ---
 ## Streaming
 The Application gets video streams from different hosters/aggregators, see [PLAYER_SOURCES](src/utils/api.js). <br></br>
@@ -55,7 +55,7 @@ Media Files for Animes are scraped from AllManga.to (i stole this mechanic from 
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/) (>=22.12.0) installed (only if you aren't using [prebuilt Binaries](https://codeberg.org/truelockmc/streambert/releases/latest))
+- [Node.js](https://nodejs.org/) (>=22.12.0) installed (only if you aren't using [prebuilt Binaries](https://codeberg.org/truelockmc/madcineama/releases/latest))
 - A free TMDB API Read Access Token ([Guide on how to get one](tmdb-tutorial.md))
 - For downloading, [this Program](https://github.com/truelockmc/vid-dl-cli-only/releases/latest) somewhere on your PC and [ffmpeg](https://ffmpeg.org/download.html) installed
 
@@ -66,24 +66,24 @@ It's saved locally, you only need to do this once.
 
 ### Linux, Manual (.deb / .AppImage / .pacman)
 
-Download the latest `.deb` `.pacman` or `.AppImage` from the [Releases](https://codeberg.org/truelockmc/streambert/releases/latest) page.
+Download the latest `.deb` `.pacman` or `.AppImage` from the [Releases](https://codeberg.org/truelockmc/madcineama/releases/latest) page.
 ```bash
 # .deb
-sudo dpkg -i streambert_*.deb
+sudo dpkg -i madcineama_*.deb
 
 # Arch Linux (.pacman)
-sudo pacman -U streambert-*.pacman
+sudo pacman -U madcineama-*.pacman
 
 # .AppImage (you can also do it with Gearlever)
-chmod +x Streambert-x64.AppImage && ./Streambert-x64.AppImage
+chmod +x MadCineAma-x64.AppImage && ./MadCineAma-x64.AppImage
 ```
 
 ### Windows
 
-Download the latest `Streambert Setup *.exe` from the [Releases](https://codeberg.org/truelockmc/streambert/releases/latest) page and run it.
+Download the latest `MadCineAma Setup *.exe` from the [Releases](https://codeberg.org/truelockmc/madcineama/releases/latest) page and run it.
 
 ### macOS
-Download the latest `Streambert-*-universal.dmg` from the [Releases](https://codeberg.org/truelockmc/streambert/releases/latest) page, open it and drag Streambert to your Applications folder.
+Download the latest `MadCineAma-*-universal.dmg` from the [Releases](https://codeberg.org/truelockmc/madcineama/releases/latest) page, open it and drag MadCineAma to your Applications folder.
 
 ---
 
@@ -141,16 +141,16 @@ Everyone is welcome to contribute to this project.
 Before contributing please make sure to read the [Contributing Guidelines](CONTRIBUTING.md) and act accordingly.
 
 ## Privacy Disclaimer
-Streambert itself does not collect ANY data. There is no centralized service which the app relies on.
+MadCineAma itself does not collect ANY data. There is no centralized service which the app relies on.
 However, the streaming sources and github (for downloading updates in-app) may still collect your data.
 
-Streambert has built-in tracker/- and adblocking, but obviously that is not perfect.
+MadCineAma has built-in tracker/- and adblocking, but obviously that is not perfect.
 
 ## Legal Disclaimer
 
 **IMPORTANT: This application is for educational and personal use only.**
 
-- Streambert does not host, store, or distribute any copyrighted content
+- MadCineAma does not host, store, or distribute any copyrighted content
 - All content is sourced from third-party providers and websites
 - Users are solely responsible for ensuring they have legal rights to access any content
 - The developer does not endorse or encourage copyright infringement
@@ -167,7 +167,7 @@ This application is provided "as is" for educational purposes. The developer:
 - Does not control third-party content providers
 - Encourages users to support content creators through legal means
 
-[![RepoStars](https://repostars.dev/api/embed?repo=truelockmc%2Fstreambert&theme=dark)](https://repostars.dev/?repos=truelockmc%2Fstreambert&theme=dark)
+[![RepoStars](https://repostars.dev/api/embed?repo=truelockmc%2Fmadcineama&theme=dark)](https://repostars.dev/?repos=truelockmc%2Fmadcineama&theme=dark)
 
 <details>
     <summary>Project Structure</summary>

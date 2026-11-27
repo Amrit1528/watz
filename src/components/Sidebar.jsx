@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { imgUrl } from "../utils/api";
 import { useSeasonalEvent } from "../components/seasonalEvents.jsx";
 import {
-  WatzLogo,
+  MadCineAmaLogo,
   HomeIcon,
   SearchIcon,
   HistoryIcon,
@@ -105,10 +105,10 @@ export default function Sidebar({
       <div
         className="sidebar-logo"
         onClick={() => onNavigate("home")}
-        title="watz"
+        title="MadCineAma"
         style={{ position: "relative" }}
       >
-        <WatzLogo />
+        <MadCineAmaLogo />
         {seasonalEvent && seasonalEvent.render()}
       </div>
 

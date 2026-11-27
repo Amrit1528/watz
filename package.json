@@ -1,7 +1,7 @@
 {
-  "name": "watz",
+  "name": "madcineama",
   "version": "2.7.0",
-  "description": "watz Desktop App",
+  "description": "MadCineAma Desktop App",
   "author": {
     "name": "truelockmc",
     "email": "anonyson@proton.me"
@@ -10,8 +10,8 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "vite build --watch",
-    "start": "vite build && electron .",
+    "dev": "node ./node_modules/vite/bin/vite.js build --watch",
+    "start": "node ./node_modules/vite/bin/vite.js build && node ./node_modules/electron/cli.js .",
     "dist": "cross-env ELECTRON_DIST=1 vite build && npm run dist:linux && npm run dist:win && npm run dist:mac",
     "dist:linux": "cross-env ELECTRON_DIST=1 vite build && electron-builder --linux deb rpm AppImage pacman --publish never",
     "dist:deb": "cross-env ELECTRON_DIST=1 vite build && electron-builder --linux deb --publish never",
@@ -39,8 +39,8 @@
     "vite": "^7.3.1"
   },
   "build": {
-    "appId": "com.truelockmc.streambert",
-    "productName": "watz",
+    "appId": "com.truelockmc.madcineama",
+    "productName": "MadCineAma",
     "asar": true,
     "compression": "normal",
     "directories": {
@@ -95,7 +95,7 @@
       "createStartMenuShortcut": true,
       "selectPerMachineByDefault": false,
       "license": "LICENSE",
-      "uninstallDisplayName": "Uninstall watz",
+      "uninstallDisplayName": "Uninstall MadCineAma",
       "installerSidebar": "public/installer-sidebar.bmp"
     },
     "win": {
@@ -166,11 +166,11 @@
       "icon": "public/sized",
       "desktop": {
         "entry": {
-          "Name": "watz",
-          "Comment": "watz Desktop App",
+          "Name": "MadCineAma",
+          "Comment": "MadCineAma Desktop App",
           "Categories": "AudioVideo;Video;Player;Multimedia;Internet;",
-          "Icon": "watz",
-          "StartupWMClass": "watz"
+          "Icon": "madcineama",
+          "StartupWMClass": "madcineama"
         }
       }
     },

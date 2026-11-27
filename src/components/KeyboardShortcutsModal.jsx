@@ -243,11 +243,11 @@ export default function KeyboardShortcutsModal({ onClose }) {
             </div>
           </div>
           <a
-            href="https://github.com/truelockmc/streambert"
+            href="https://github.com/truelockmc/madcineama"
             onClick={(e) => {
               e.preventDefault();
               window.electron?.openExternal(
-                "https://github.com/truelockmc/streambert",
+                "https://github.com/truelockmc/madcineama",
               );
             }}
             style={{

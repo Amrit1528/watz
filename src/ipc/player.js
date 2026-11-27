@@ -24,7 +24,7 @@ const TRUSTED_UPDATE_SOURCES = [
     origin: "https://github.com",
     // Must match the full repo path so an attacker can't use
     // a different repo on github.com to serve a malicious binary.
-    pathPrefix: "/truelockmc/streambert/releases/download/",
+    pathPrefix: "/truelockmc/madcineama/releases/download/",
     redirectHosts: [
       "github.com",
       "objects.githubusercontent.com",
@@ -251,14 +251,14 @@ function register(getMainWindow, { writeSecretMigration }) {
     };
     // Launch and wait for a short time.
     // The player's output goes to a log FILE (not a pipe) so it is fully
-    // independent of this app: quitting Streambert will not close the player
+    // independent of this app: quitting MadCineAma will not close the player
     const tryLaunch = (bin, args) => {
       const resolved = resolveBin(bin);
       if (!resolved) return Promise.resolve(null);
       return new Promise((resolve) => {
         const logPath = path.join(
           os.tmpdir(),
-          `streambert_player_${process.pid}_${Date.now()}.log`,
+          `madcineama_player_${process.pid}_${Date.now()}.log`,
         );
         let fd = null;
         let done = false;
@@ -556,7 +556,7 @@ function register(getMainWindow, { writeSecretMigration }) {
               : format === "dmg"
                 ? ".dmg"
                 : ".AppImage";
-      const destPath = path.join(os.tmpdir(), `streambert-update${ext}`);
+      const destPath = path.join(os.tmpdir(), `madcineama-update${ext}`);
 
       await new Promise((resolve, reject) => {
         if (signal.aborted) return reject(new Error("Cancelled"));
@@ -583,7 +583,7 @@ function register(getMainWindow, { writeSecretMigration }) {
             reqUrl,
             {
               headers: {
-                "User-Agent": "Streambert-AutoUpdater",
+                "User-Agent": "MadCineAma-AutoUpdater",
                 Accept: "application/octet-stream",
               },
             },
@@ -664,7 +664,7 @@ function register(getMainWindow, { writeSecretMigration }) {
         fs.chmodSync(destPath, 0o755);
         const currentAppImage = process.env.APPIMAGE;
         if (currentAppImage) {
-          const scriptPath = path.join(os.tmpdir(), "streambert-update.sh");
+          const scriptPath = path.join(os.tmpdir(), "madcineama-update.sh");
           const pid = process.pid;
           const target = currentAppImage;
           const scriptContent =
@@ -804,7 +804,7 @@ function register(getMainWindow, { writeSecretMigration }) {
     https
       .get(
         url,
-        { headers: { "User-Agent": "Streambert-ReleaseNotes" } },
+        { headers: { "User-Agent": "MadCineAma-ReleaseNotes" } },
         (res) => {
           if (
             res.statusCode >= 300 &&

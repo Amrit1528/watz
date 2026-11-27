@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { WatzLogo, PlayIcon } from "./Icons";
+import { MadCineAmaLogo, PlayIcon } from "./Icons";
 import { tmdbRequestConfig } from "../utils/api";
 
 async function validateToken(token) {
@@ -120,9 +120,9 @@ export default function SetupScreen({ onSave, onSkip }) {
     <div className="apikey-modal">
       <div className="apikey-box">
         <div className="apikey-logo">
-          <WatzLogo />
+          <MadCineAmaLogo />
         </div>
-        <div className="apikey-title">WATZ</div>
+        <div className="apikey-title">MADCINEAMA</div>
         <p className="apikey-sub">
           Enter your <strong>free</strong> TMDB{" "}
           <strong>Read Access Token</strong> to get started.
@@ -139,7 +139,7 @@ export default function SetupScreen({ onSave, onSkip }) {
           <br />
           <ExternalLink
             className="apikey-link"
-            href="https://github.com/truelockmc/streambert/blob/main/tmdb-tutorial.md"
+            href="https://github.com/truelockmc/madcineama/blob/main/tmdb-tutorial.md"
           >
             Step-by-step guide on how to get that Token
           </ExternalLink>

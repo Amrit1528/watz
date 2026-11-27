@@ -1,6 +1,6 @@
 // localStorage-based persistence (works in both Vite dev and prod)
 
-const PREFIX = "streambert_";
+const PREFIX = "madcineama_";
 
 export const storage = {
   get(key) {
@@ -27,7 +27,7 @@ export const storage = {
       localStorage.removeItem(PREFIX + key);
     } catch {}
   },
-  // Remove all streambert_ keys (used by reset)
+  // Remove all madcineama_ keys (used by reset)
   clearAll() {
     try {
       Object.keys(localStorage)
@@ -194,13 +194,13 @@ export const secureStorage = {
     // Fallback: localStorage (browser build, or Electron before migration).
     try {
       const raw =
-        localStorage.getItem("watz_" + key) ??
+        localStorage.getItem("madcineama_" + key) ??
         localStorage.getItem(PREFIX + key) ??
         localStorage.getItem(key);
       const v = _cleanSecureValue(key, raw);
       if (!v && raw) {
         // Drop a revoked/legacy value so it can never be reused.
-        localStorage.removeItem("watz_" + key);
+        localStorage.removeItem("madcineama_" + key);
         localStorage.removeItem(PREFIX + key);
         localStorage.removeItem(key);
       }
@@ -217,7 +217,7 @@ export const secureStorage = {
       } catch {}
     }
     try {
-      localStorage.setItem("watz_" + key, v);
+      localStorage.setItem("madcineama_" + key, v);
       if (key === "apikey") localStorage.setItem(key, v);
     } catch {}
   },
@@ -234,9 +234,9 @@ export async function clearAppCaches() {
       await window.electron.clearAppCache();
     } catch {}
   }
-  localStorage.removeItem("streambert_anilistCache");
-  localStorage.removeItem("streambert_episodeGroupCache");
-  localStorage.removeItem("streambert_aniskipCache");
+  localStorage.removeItem("madcineama_anilistCache");
+  localStorage.removeItem("madcineama_episodeGroupCache");
+  localStorage.removeItem("madcineama_aniskipCache");
   for (const key of Object.keys(localStorage)) {
     if (key.startsWith("dlDur_")) localStorage.removeItem(key);
   }
