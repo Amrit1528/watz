@@ -22,8 +22,10 @@ import {
   setApiErrorHandlers,
   imgUrl,
   tmdbRequestConfig,
+  DEFAULT_TMDB_API_KEY,
 } from "./utils/api";
 import { clearAppCaches } from "./utils/storage";
+import { IS_MOBILE } from "./utils/platform";
 import {
   readDiscordRpcSettings,
   applyDiscordRpcEnabled,
@@ -347,7 +349,13 @@ export default function App() {
     let mounted = true;
     secureStorage.get("apikey").then((val) => {
       if (!mounted) return;
-      setApiKey(val || null);
+      // Mobile builds hide Settings, so provision a working key automatically.
+      let resolved = val;
+      if (!resolved && IS_MOBILE) {
+        resolved = DEFAULT_TMDB_API_KEY;
+        secureStorage.set("apikey", resolved);
+      }
+      setApiKey(resolved || null);
       setApiKeyLoaded(true);
     });
     return () => {
@@ -1146,10 +1154,11 @@ export default function App() {
                 onRemoveHistory={removeHistory}
               />
             )}
-            {page === "settings" && (
+            {page === "settings" && !IS_MOBILE && (
               <SettingsPage
                 apiKey={effectiveApiKey}
                 onChangeApiKey={changeApiKey}
+                onSaveApiKey={saveApiKey}
                 initialSection={selected?.section}
               />
             )}

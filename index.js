@@ -37,6 +37,20 @@ const _t0 = Date.now();
 const _bench = (label) =>
   console.log(`[boot] ${label}: +${Date.now() - _t0}ms`);
 
+// Electron's <webview> implementation attaches an internal
+// `did-stop-loading` listener to each guest WebContents on every navigation.
+// Repeated player loads in one session therefore exceed Node's default limit
+// of 10 and print a MaxListenersExceededWarning. Disable the limit for all
+// WebContents (main window, guests and pop-outs) so the warning does not mask
+// real errors.
+app.on("web-contents-created", (_event, contents) => {
+  try {
+    if (typeof contents.setMaxListeners === "function") {
+      contents.setMaxListeners(0);
+    }
+  } catch {}
+});
+
 // -- Sub-modules ---------------------------------------------------------------
 const blockStats = require("./src/ipc/blockStats");
 const siteTweaks = require("./src/ipc/siteTweaks");
@@ -629,6 +643,75 @@ discordRpc.register(ipcMain);
 
 // get-block-stats lives with its data
 ipcMain.handle("get-block-stats", () => blockStats.getBlockStats());
+
+// ── TMDB auto-token: open a browser window so the user can log in; once
+// logged in, navigate to /settings/api and scrape the Read Access Token. ──
+ipcMain.handle("tmdb-auto-token", async () => {
+  return new Promise((resolve) => {
+    const win = new BrowserWindow({
+      width: 960,
+      height: 720,
+      show: true,
+      title: "MadCineAma — TMDB Login",
+      webPreferences: {
+        partition: "persist:tmdb",
+        contextIsolation: true,
+        nodeIntegration: false,
+        sandbox: true,
+      },
+    });
+
+    let resolved = false;
+    const finish = (token) => {
+      if (resolved) return;
+      resolved = true;
+      try { win.close(); } catch {}
+      resolve(token || null);
+    };
+
+    const scrape = async () => {
+      try {
+        const token = await win.webContents.executeJavaScript(`(() => {
+          const inputs = Array.from(document.querySelectorAll('input, textarea'));
+          for (const el of inputs) {
+            const v = (el.value || '').trim();
+            if (/^eyJ[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$/.test(v)) return v;
+          }
+          let m = document.body.innerText.match(/eyJ[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+/);
+          if (m) return m[0];
+          for (const el of inputs) {
+            const v = (el.value || '').trim();
+            if (/^[a-f0-9]{32}$/i.test(v)) return v;
+          }
+          m = document.body.innerText.match(/\\b[a-f0-9]{32}\\b/i);
+          return m ? m[0] : null;
+        })()`);
+        if (token) finish(token);
+      } catch {}
+    };
+
+    const maybeNavigate = () => {
+      const url = win.webContents.getURL();
+      if (url.includes("/settings/api")) {
+        setTimeout(scrape, 2000);
+      } else if (url.includes("/login") || url.includes("/signup")) {
+        // wait for user to log in
+      } else if (url.includes("themoviedb.org")) {
+        // try to go to settings/api once (e.g. after login redirect)
+        win.loadURL("https://www.themoviedb.org/settings/api").catch(() => {});
+      }
+    };
+
+    win.webContents.on("did-finish-load", maybeNavigate);
+    win.webContents.on("did-navigate", (_e, url) => {
+      if (url.includes("/settings/api")) setTimeout(scrape, 2000);
+    });
+    win.on("closed", () => finish(null));
+    setTimeout(() => finish(null), 5 * 60 * 1000);
+
+    win.loadURL("https://www.themoviedb.org/settings/api").catch(() => finish(null));
+  });
+});
 
 // -- Player memory cleanup ---------------------------------------------
 // Called by MoviePage / TVPage on component unmount.

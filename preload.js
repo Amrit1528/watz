@@ -41,6 +41,7 @@ contextBridge.exposeInMainWorld("electron", {
   // Misc
   pickFolder: () => ipcRenderer.invoke("pick-folder"),
   openExternal: (url) => ipcRenderer.invoke("open-external", url),
+  tmdbAutoToken: () => ipcRenderer.invoke("tmdb-auto-token"),
   openPath: (filePath) => ipcRenderer.invoke("open-path", filePath),
   getInstallPath: () => ipcRenderer.invoke("get-install-path"),
   openPathAtTime: (filePath, seconds, subtitlePaths) =>

@@ -1,4 +1,8 @@
 const TMDB_BASE = "https://api.themoviedb.org/3";
+
+// Built-in TMDB API key (v3) so the app works out of the box without the
+// user having to create a TMDB account and paste a token manually.
+export const DEFAULT_TMDB_API_KEY = "3fd2be6f0c70a2a598f084ddfb75487c";
 const IMG_BASE = "https://image.tmdb.org/t/p";
 
 // ── TMDB metadata language ────────────────────────────────────────────────────
@@ -228,6 +232,9 @@ export const PLAYER_SOURCES = [
     label: "Vidrift",
     tag: null,
     note: "Multi Lang, Anime ✓", // Has Anime sub/dub and multi language support but not with anilistId
+    // Vidrift's CDN stalls requests whose User-Agent contains "Electron/" or
+    // the app name, leaving the player stuck at "Locating a server".
+    cleanUserAgent: true,
     supportsProgress: true,
     colorParam: "brandColor",
     langParam: "sub",

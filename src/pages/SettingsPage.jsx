@@ -3400,6 +3400,7 @@ function SettingsTopBar({ sectionRefs, contentRef }) {
 export default function SettingsPage({
   apiKey,
   onChangeApiKey,
+  onSaveApiKey,
   initialSection,
 }) {
   const [downloadPath, setDownloadPath] = useState(
@@ -3749,6 +3750,18 @@ export default function SettingsPage({
               </code>
               <button className="btn btn-ghost" onClick={onChangeApiKey}>
                 Change API Token
+              </button>
+              <button
+                className="btn btn-secondary"
+                onClick={async () => {
+                  if (!window.electron?.tmdbAutoToken) return;
+                  const token = await window.electron.tmdbAutoToken();
+                  if (token) {
+                    onSaveApiKey?.(token);
+                  }
+                }}
+              >
+                Auto-get token
               </button>
             </div>
           </div>

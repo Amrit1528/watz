@@ -93,6 +93,30 @@ export default function SetupScreen({ onSave, onSkip }) {
   const [error, setError] = useState(null); // { title, body }
   const inputRef = useRef(null);
   const [focused, setFocused] = useState(false);
+  const [autoStatus, setAutoStatus] = useState("idle"); // 'idle' | 'running' | 'done' | 'failed'
+
+  const runAuto = async () => {
+    if (!window.electron?.tmdbAutoToken) return;
+    setAutoStatus("running");
+    setError(null);
+    try {
+      const token = await window.electron.tmdbAutoToken();
+      if (token) {
+        setAutoStatus("done");
+        const result = await validateToken(token);
+        if (result.ok) {
+          onSave(token);
+          return;
+        }
+        setError(errorMessage(result.reason, result.status));
+        setAutoStatus("failed");
+      } else {
+        setAutoStatus("failed");
+      }
+    } catch {
+      setAutoStatus("failed");
+    }
+  };
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -100,6 +124,12 @@ export default function SetupScreen({ onSave, onSkip }) {
       inputRef.current?.focus();
     }, 50);
     return () => clearTimeout(t);
+  }, []);
+
+  // Auto-fetch the token on first show (user just needs to log in to TMDB).
+  useEffect(() => {
+    runAuto();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = async () => {
@@ -144,6 +174,27 @@ export default function SetupScreen({ onSave, onSkip }) {
             Step-by-step guide on how to get that Token
           </ExternalLink>
         </p>
+        <div style={{ marginBottom: 12, textAlign: "center" }}>
+          {autoStatus === "running" && (
+            <div style={{ color: "var(--text2)", fontSize: 13 }}>
+              A TMDB login window has opened. Log in there — your API Read
+              Access Token will be copied automatically.
+            </div>
+          )}
+          {autoStatus !== "running" && (
+            <button
+              className="btn btn-secondary"
+              style={{ width: "100%", justifyContent: "center" }}
+              onClick={runAuto}
+              disabled={checking}
+            >
+              {autoStatus === "failed"
+                ? "Retry automatic login"
+                : "Login to TMDB & get token automatically"}
+            </button>
+          )}
+        </div>
+
         <input
           className={`apikey-input${error ? " apikey-input-error" : ""}`}
           placeholder="Paste your TMDB Read Access Token (eyJ...)..."

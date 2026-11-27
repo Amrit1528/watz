@@ -7,6 +7,8 @@ import {
   useCallback,
   memo,
 } from "react";
+import { IS_MOBILE } from "../utils/platform";
+import MobileVideoPlayer from "../components/MobileVideoPlayer";
 import {
   EPISODE_GROUP_IDS,
   applyEpisodeMapping,
@@ -716,6 +718,8 @@ export default function TVPage({
     setResolvingUrl(false);
     setResolveError(null);
     setWebviewLoading(true); // instantly blank the player on every source/episode switch
+    const t = setTimeout(() => setWebviewLoading(false), 8000);
+    return () => clearTimeout(t);
   }, [
     item.id,
     selectedEp?.episode_number,
@@ -1249,20 +1253,6 @@ export default function TVPage({
   // Show loader instantly when playback starts
   useEffect(() => {
     if (playing) setWebviewLoading(true);
-  }, [playing]);
-
-  // ── Webview memory cleanup ────────────────────────────────────────────────
-  // useLayoutEffect fires synchronously BEFORE React mutates the DOM, so the
-  // webview is still attached when we navigate it to about:blank.
-  // This lets Chromium unload the streaming page.
-  useLayoutEffect(() => {
-    if (playing) return; // only act when playing stops
-    const wv = webviewRef.current;
-    if (wv) {
-      try {
-        wv.src = "about:blank";
-      } catch {}
-    }
   }, [playing]);
 
   // On unmount: signal main process to destroy the player WebContents and flush session cahce
@@ -1917,7 +1907,9 @@ export default function TVPage({
                 ref={playerWrapRef}
               >
                 {/* Universal source-loading overlay, shown instantly on every source/episode switch */}
-                {webviewLoading && !resolveError && (
+                {!IS_MOBILE &&
+                  webviewLoading &&
+                  !resolveError && (
                   <div
                     style={{
                       position: "absolute",
@@ -2215,7 +2207,19 @@ export default function TVPage({
                     </div>
                   </div>
                 )}
-                {isElectron ? (
+                {IS_MOBILE && sourceIsAsync(playerSource) && resolvedPlayerUrl ? (
+                  <MobileVideoPlayer
+                    src={resolvedPlayerUrl}
+                    startTime={storage.get("dlTime_" + currentProgressKey) || 0}
+                    onProgress={(ct, dur) => {
+                      storage.set("dlTime_" + currentProgressKey, ct);
+                      saveProgressRef.current(
+                        currentProgressKey,
+                        Math.min(100, Math.floor((ct / dur) * 100)),
+                      );
+                    }}
+                  />
+                ) : isElectron ? (
                   <webview
                     ref={webviewRef}
                     key={sourceUsesCleanUa(playerSource) ? "ua-clean" : "ua-default"}
@@ -2231,7 +2235,7 @@ export default function TVPage({
                     }
                     partition="persist:player"
                     allowpopups="false"
-                    sandbox="allow-scripts allow-same-origin allow-forms"
+                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
                     style={{
                       position: "absolute",
                       inset: 0,
@@ -2249,6 +2253,7 @@ export default function TVPage({
                   <iframe
                     ref={webviewRef}
                     key={sourceUsesCleanUa(playerSource) ? "ua-clean" : "ua-default"}
+                    onLoad={() => setWebviewLoading(false)}
                     src={
                       pipOpen
                         ? "about:blank"
@@ -2263,11 +2268,12 @@ export default function TVPage({
                       height: "100%",
                       border: "none",
                       visibility:
-                        webviewLoading || (isAsync && !resolvedPlayerUrl)
+                        (webviewLoading && !IS_MOBILE) ||
+                        (isAsync && !resolvedPlayerUrl)
                           ? "hidden"
                           : "visible",
                     }}
-                    sandbox="allow-scripts allow-same-origin allow-forms"
+                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                     tabIndex={-1}

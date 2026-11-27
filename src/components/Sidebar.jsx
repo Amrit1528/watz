@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { imgUrl } from "../utils/api";
+import { IS_MOBILE } from "../utils/platform";
 import { useSeasonalEvent } from "../components/seasonalEvents.jsx";
 import {
   MadCineAmaLogo,
@@ -224,21 +225,25 @@ export default function Sidebar({
           icon={<HelpIcon />}
           label="Help & Shortcuts (?)"
         />
-        <SideBtn
-          active={page === "settings"}
-          onClick={() => onNavigate("settings")}
-          icon={<SettingsIcon />}
-          label="Settings"
-        />
-        <button
-          className="sidebar-btn"
-          onClick={() => window.electron?.quitApp?.()}
-          title="Quit App"
-          style={{ color: "#e53e3e", marginTop: 4 }}
-        >
-          <QuitIcon />
-          <span className="tooltip">Quit App</span>
-        </button>
+        {!IS_MOBILE && (
+          <SideBtn
+            active={page === "settings"}
+            onClick={() => onNavigate("settings")}
+            icon={<SettingsIcon />}
+            label="Settings"
+          />
+        )}
+        {!IS_MOBILE && (
+          <button
+            className="sidebar-btn"
+            onClick={() => window.electron?.quitApp?.()}
+            title="Quit App"
+            style={{ color: "#e53e3e", marginTop: 4 }}
+          >
+            <QuitIcon />
+            <span className="tooltip">Quit App</span>
+          </button>
+        )}
       </div>
     </div>
   );

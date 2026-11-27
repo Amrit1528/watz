@@ -7,6 +7,8 @@ import {
   useCallback,
   useMemo,
 } from "react";
+import { IS_MOBILE } from "../utils/platform";
+import MobileVideoPlayer from "../components/MobileVideoPlayer";
 import {
   tmdbFetch,
   imgUrl,
@@ -345,6 +347,10 @@ export default function MoviePage({
     setResolvingUrl(false);
     setResolveError(null);
     setWebviewLoading(true); // instantly blank the player on every source/item switch
+    // On mobile an <iframe> has no did-finish-load event; ensure the loader
+    // never gets stuck if the embed fires no load event.
+    const t = setTimeout(() => setWebviewLoading(false), 8000);
+    return () => clearTimeout(t);
   }, [item.id, playerSource, dubMode]);
 
   // Fetch AniList data + auto-set source for anime/non-anime
@@ -523,20 +529,6 @@ export default function MoviePage({
   // Show loader instantly when play starts
   useEffect(() => {
     if (playing) setWebviewLoading(true);
-  }, [playing]);
-
-  // ── Webview memory cleanup ────────────────────────────────────────────────
-  // useLayoutEffect fires synchronously BEFORE React mutates the DOM, so the
-  // webview is still attached when we navigate it to about:blank.
-  // This lets Chromium unload.
-  useLayoutEffect(() => {
-    if (playing) return;
-    const wv = webviewRef.current;
-    if (wv) {
-      try {
-        wv.src = "about:blank";
-      } catch {}
-    }
   }, [playing]);
 
   // On unmount: signal main process to destroy the player WebContents and flush session cache.
@@ -990,7 +982,9 @@ export default function MoviePage({
             ref={playerWrapRef}
           >
             {/* Universal source-loading overlay, shown instantly on every source/item switch */}
-            {webviewLoading && !resolveError && (
+            {!IS_MOBILE &&
+              webviewLoading &&
+              !resolveError && (
               <div
                 style={{
                   position: "absolute",
@@ -1118,7 +1112,19 @@ export default function MoviePage({
                 </button>
               </div>
             )}
-            {isElectron ? (
+            {IS_MOBILE && sourceIsAsync(playerSource) && resolvedPlayerUrl ? (
+              <MobileVideoPlayer
+                src={resolvedPlayerUrl}
+                startTime={storage.get("dlTime_" + progressKey) || 0}
+                onProgress={(ct, dur) => {
+                  storage.set("dlTime_" + progressKey, ct);
+                  saveProgressRef.current(
+                    progressKey,
+                    Math.min(100, Math.floor((ct / dur) * 100)),
+                  );
+                }}
+              />
+            ) : isElectron ? (
               <webview
                 ref={webviewRef}
                 key={sourceUsesCleanUa(playerSource) ? "ua-clean" : "ua-default"}
@@ -1134,7 +1140,7 @@ export default function MoviePage({
                 }
                 partition="persist:player"
                 allowpopups="false"
-                sandbox="allow-scripts allow-same-origin allow-forms"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
                 style={{
                   position: "absolute",
                   inset: 0,
@@ -1152,6 +1158,7 @@ export default function MoviePage({
               <iframe
                 ref={webviewRef}
                 key={sourceUsesCleanUa(playerSource) ? "ua-clean" : "ua-default"}
+                onLoad={() => setWebviewLoading(false)}
                 src={
                   pipOpen
                     ? "about:blank"
@@ -1166,12 +1173,12 @@ export default function MoviePage({
                   height: "100%",
                   border: "none",
                   visibility:
-                    webviewLoading ||
+                    (webviewLoading && !IS_MOBILE) ||
                     (sourceIsAsync(playerSource) && !resolvedPlayerUrl)
                       ? "hidden"
                       : "visible",
                 }}
-                sandbox="allow-scripts allow-same-origin allow-forms"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
               />
