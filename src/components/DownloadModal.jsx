@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { IS_MOBILE } from "../utils/platform";
 import { CloseIcon, DownloadIcon, SettingsIcon, SubtitlesIcon } from "./Icons";
 import {
   storage,
@@ -1113,8 +1114,8 @@ export default function DownloadModal({
                 )}
               </div>
 
-              {/* ── Downloader setup ──────────────────────────────────────── */}
-              {!downloader?.exists && (
+              {/* ── Downloader setup (desktop only) ──────────────────────── */}
+              {!IS_MOBILE && !downloader?.exists && (
                 <div className="download-instructions">
                   <div className="download-instructions-title">
                     Set up Video Downloader

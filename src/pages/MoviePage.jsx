@@ -8,6 +8,7 @@ import {
   useMemo,
 } from "react";
 import { IS_MOBILE } from "../utils/platform";
+import { lockPlayerOrientation } from "../utils/orientation";
 import MobileVideoPlayer from "../components/MobileVideoPlayer";
 import {
   tmdbFetch,
@@ -529,6 +530,11 @@ export default function MoviePage({
   // Show loader instantly when play starts
   useEffect(() => {
     if (playing) setWebviewLoading(true);
+  }, [playing]);
+
+  // The APK is locked to landscape from app start; re-assert it on playback.
+  useEffect(() => {
+    if (playing) lockPlayerOrientation();
   }, [playing]);
 
   // On unmount: signal main process to destroy the player WebContents and flush session cache.
@@ -1308,6 +1314,7 @@ export default function MoviePage({
                 ))}
               </div>
             )}
+            {!IS_MOBILE && (
             <button
               className="player-overlay-btn"
               onClick={() =>
@@ -1350,6 +1357,7 @@ export default function MoviePage({
                 </span>
               )}
             </button>
+            )}
           </div>
 
           {displayPct > 0 && (
@@ -1436,7 +1444,7 @@ export default function MoviePage({
         />
       )}
 
-      {showDownload && (
+      {!IS_MOBILE && showDownload && (
         <DownloadModal
           onClose={() => setShowDownload(false)}
           m3u8Url={m3u8Url}

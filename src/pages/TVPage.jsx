@@ -8,6 +8,7 @@ import {
   memo,
 } from "react";
 import { IS_MOBILE } from "../utils/platform";
+import { lockPlayerOrientation } from "../utils/orientation";
 import MobileVideoPlayer from "../components/MobileVideoPlayer";
 import {
   EPISODE_GROUP_IDS,
@@ -1255,6 +1256,11 @@ export default function TVPage({
     if (playing) setWebviewLoading(true);
   }, [playing]);
 
+  // The APK is locked to landscape from app start; re-assert it on playback.
+  useEffect(() => {
+    if (playing) lockPlayerOrientation();
+  }, [playing]);
+
   // On unmount: signal main process to destroy the player WebContents and flush session cahce
   useEffect(() => {
     return () => {
@@ -2415,6 +2421,7 @@ export default function TVPage({
                     )}
                   </div>
                 )}
+                {!IS_MOBILE && (
                 <button
                   className="player-overlay-btn"
                   onClick={() =>
@@ -2457,6 +2464,7 @@ export default function TVPage({
                     </span>
                   )}
                 </button>
+                )}
 
                 {/* Skip controls are injected directly into the webview DOM*/}
 
@@ -2749,7 +2757,7 @@ export default function TVPage({
         />
       )}
 
-      {showDownload && (
+      {!IS_MOBILE && showDownload && (
         <DownloadModal
           onClose={() => setShowDownload(false)}
           m3u8Url={m3u8Url}

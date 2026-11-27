@@ -1,3 +1,5 @@
+import { IS_MOBILE } from "../utils/platform";
+
 // Keyboard Shortcuts reference modal
 export default function KeyboardShortcutsModal({ onClose }) {
   const shortcuts = [
@@ -213,7 +215,8 @@ export default function KeyboardShortcutsModal({ onClose }) {
           ))}
         </div>
 
-        {/* GitHub support link */}
+        {/* GitHub support link — desktop only (APK has no external links) */}
+        {!IS_MOBILE && (
         <div
           style={{
             marginTop: 20,
@@ -272,6 +275,7 @@ export default function KeyboardShortcutsModal({ onClose }) {
             GitHub ↗
           </a>
         </div>
+        )}
 
         <div
           style={{

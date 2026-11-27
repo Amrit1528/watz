@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { CloseIcon, ExternalLinkIcon } from "./Icons";
 import { storage } from "../utils/storage";
+import { IS_MOBILE } from "../utils/platform";
+import { lockPlayerOrientation } from "../utils/orientation";
 
 export const DEFAULT_INVIDIOUS_BASE = "https://inv.nadeko.net";
 
@@ -65,6 +67,10 @@ export default function TrailerModal({ trailerKey, title, onClose }) {
   const [statusMsg, setStatusMsg] = useState("Loading trailer…");
   const [failed, setFailed] = useState(false);
   const instanceIndexRef = useRef(-1);
+
+  useEffect(() => {
+    lockPlayerOrientation();
+  }, []);
 
   const tryNextInstance = useCallback(() => {
     const preferred = getInvidiousBase();
@@ -166,14 +172,16 @@ export default function TrailerModal({ trailerKey, title, onClose }) {
             🎬 {title} — Official Trailer
           </span>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <button
-              onClick={openInBrowser}
-              title="Open in browser"
-              className="trailer-openbrowser-btn"
-            >
-              <ExternalLinkIcon size={13} />
-              Open in Browser
-            </button>
+            {!IS_MOBILE && (
+              <button
+                onClick={openInBrowser}
+                title="Open in browser"
+                className="trailer-openbrowser-btn"
+              >
+                <ExternalLinkIcon size={13} />
+                Open in Browser
+              </button>
+            )}
             <button
               className="trailer-close-btn"
               onClick={onClose}

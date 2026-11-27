@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { MadCineAmaLogo, PlayIcon } from "./Icons";
 import { tmdbRequestConfig } from "../utils/api";
+import { IS_MOBILE } from "../utils/platform";
 
 async function validateToken(token) {
   // Step 1: Can we reach TMDB at all?
@@ -73,6 +74,7 @@ function errorMessage(reason, status) {
 }
 
 function ExternalLink({ href, className, children }) {
+  if (IS_MOBILE) return <span className={className}>{children}</span>;
   return (
     <a
       className={className}

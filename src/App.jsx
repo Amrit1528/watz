@@ -26,6 +26,7 @@ import {
 } from "./utils/api";
 import { clearAppCaches } from "./utils/storage";
 import { IS_MOBILE } from "./utils/platform";
+import { lockPlayerOrientation } from "./utils/orientation";
 import {
   readDiscordRpcSettings,
   applyDiscordRpcEnabled,
@@ -343,6 +344,12 @@ export default function App() {
   const [downloads, setDownloads] = useState([]);
   const [highlightDownload, setHighlightDownload] = useState(null);
   const [closeConfirm, setCloseConfirm] = useState(null); // { count }
+
+  // Keep the APK in landscape from the moment it opens, not just while a
+  // video is playing.
+  useEffect(() => {
+    if (IS_MOBILE) lockPlayerOrientation();
+  }, []);
 
   // ── Load API key from secure storage on startup ──
   useEffect(() => {
@@ -1162,7 +1169,7 @@ export default function App() {
                 initialSection={selected?.section}
               />
             )}
-            {page === "downloads" && (
+            {page === "downloads" && !IS_MOBILE && (
               <DownloadsPage
                 downloads={downloads}
                 onDeleteDownload={handleDeleteDownload}

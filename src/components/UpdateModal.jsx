@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { IS_MOBILE } from "../utils/platform";
 
 // ── Image component that proxies through Electron main process ────────────────
 // Fixes Codeberg (and other external) images being blocked by Electron's CSP.
@@ -101,44 +102,48 @@ function inlineFormat(text) {
     } else if (raw.startsWith("[")) {
       const mm = raw.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
       if (mm) {
-        parts.push(
-          <a
-            key={k++}
-            href={mm[2]}
-            onClick={(e) => {
-              e.preventDefault();
-              window.electron?.openExternal(mm[2]);
-            }}
-            style={{
-              color: "var(--red)",
-              textDecoration: "underline",
-              cursor: "pointer",
-            }}
-          >
-            {mm[1]}
-          </a>,
-        );
+        if (IS_MOBILE) parts.push(<span key={k++}>{mm[1]}</span>);
+        else
+          parts.push(
+            <a
+              key={k++}
+              href={mm[2]}
+              onClick={(e) => {
+                e.preventDefault();
+                window.electron?.openExternal(mm[2]);
+              }}
+              style={{
+                color: "var(--red)",
+                textDecoration: "underline",
+                cursor: "pointer",
+              }}
+            >
+              {mm[1]}
+            </a>,
+          );
       }
     } else if (raw.startsWith("@")) {
       const username = raw.slice(1);
-      parts.push(
-        <a
-          key={k++}
-          href={`https://github.com/${username}`}
-          onClick={(e) => {
-            e.preventDefault();
-            window.electron?.openExternal(`https://github.com/${username}`);
-          }}
-          style={{
-            color: "var(--red)",
-            textDecoration: "none",
-            fontWeight: 500,
-            cursor: "pointer",
-          }}
-        >
-          {raw}
-        </a>,
-      );
+      if (IS_MOBILE) parts.push(<span key={k++}>{raw}</span>);
+      else
+        parts.push(
+          <a
+            key={k++}
+            href={`https://github.com/${username}`}
+            onClick={(e) => {
+              e.preventDefault();
+              window.electron?.openExternal(`https://github.com/${username}`);
+            }}
+            style={{
+              color: "var(--red)",
+              textDecoration: "none",
+              fontWeight: 500,
+              cursor: "pointer",
+            }}
+          >
+            {raw}
+          </a>,
+        );
     } else if (raw.startsWith("http")) {
       // Shorten PR/issue URLs to "#41"
       let label = raw;
@@ -148,24 +153,26 @@ function inlineFormat(text) {
         if (prMatch) label = `#${prMatch[2]}`;
         else label = u.hostname.replace(/^www\./, "") + u.pathname;
       } catch {}
-      parts.push(
-        <a
-          key={k++}
-          href={raw}
-          onClick={(e) => {
-            e.preventDefault();
-            window.electron?.openExternal(raw);
-          }}
-          style={{
-            color: "var(--red)",
-            textDecoration: "underline",
-            cursor: "pointer",
-            fontSize: "0.95em",
-          }}
-        >
-          {label}
-        </a>,
-      );
+      if (IS_MOBILE) parts.push(<span key={k++}>{label}</span>);
+      else
+        parts.push(
+          <a
+            key={k++}
+            href={raw}
+            onClick={(e) => {
+              e.preventDefault();
+              window.electron?.openExternal(raw);
+            }}
+            style={{
+              color: "var(--red)",
+              textDecoration: "underline",
+              cursor: "pointer",
+              fontSize: "0.95em",
+            }}
+          >
+            {label}
+          </a>,
+        );
     }
 
     last = m.index + raw.length;
@@ -601,22 +608,24 @@ export default function UpdateModal({
                     </span>
                   </>
                 )}
-                <a
-                  href={url}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.electron?.openExternal(url);
-                  }}
-                  style={{
-                    color: "var(--red)",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                    cursor: "pointer",
-                  }}
-                  title={`View on ${sourceLabel || "GitHub"}`}
-                >
-                  v{latest} ↗
-                </a>
+                {!IS_MOBILE && (
+                  <a
+                    href={url}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.electron?.openExternal(url);
+                    }}
+                    style={{
+                      color: "var(--red)",
+                      fontWeight: 600,
+                      textDecoration: "none",
+                      cursor: "pointer",
+                    }}
+                    title={`View on ${sourceLabel || "GitHub"}`}
+                  >
+                    v{latest} ↗
+                  </a>
+                )}
                 is ready to install
                 {format && (
                   <span
@@ -714,8 +723,8 @@ export default function UpdateModal({
             </div>
           )}
 
-          {/* No format detected warning */}
-          {!format && phase === "idle" && (
+          {/* No format detected warning — desktop only */}
+          {!IS_MOBILE && !format && phase === "idle" && (
             <div
               style={{ fontSize: 12, color: "var(--text3)", marginBottom: 12 }}
             >
@@ -787,22 +796,24 @@ export default function UpdateModal({
               style={{ fontSize: 13, color: "var(--red)", marginBottom: 12 }}
             >
               ✕ {errorMsg}
-              <span style={{ marginLeft: 10 }}>
-                <a
-                  href={url}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.electron?.openExternal(url);
-                  }}
-                  style={{
-                    color: "var(--red)",
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                  }}
-                >
-                  Download manually ↗
-                </a>
-              </span>
+              {!IS_MOBILE && (
+                <span style={{ marginLeft: 10 }}>
+                  <a
+                    href={url}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.electron?.openExternal(url);
+                    }}
+                    style={{
+                      color: "var(--red)",
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Download manually ↗
+                  </a>
+                </span>
+              )}
             </div>
           )}
 
@@ -820,28 +831,30 @@ export default function UpdateModal({
             </button>
             {phase === "idle" && (
               <>
-                <a
-                  href={url}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.electron?.openExternal(url);
-                  }}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    padding: "9px 18px",
-                    background: "var(--surface2)",
-                    border: "1px solid var(--border)",
-                    borderRadius: 8,
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: "var(--text)",
-                    textDecoration: "none",
-                    cursor: "pointer",
-                  }}
-                >
-                  {sourceLabel || "GitHub"} ↗
-                </a>
+                {!IS_MOBILE && (
+                  <a
+                    href={url}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.electron?.openExternal(url);
+                    }}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      padding: "9px 18px",
+                      background: "var(--surface2)",
+                      border: "1px solid var(--border)",
+                      borderRadius: 8,
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: "var(--text)",
+                      textDecoration: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {sourceLabel || "GitHub"} ↗
+                  </a>
+                )}
                 <button
                   className="btn"
                   disabled={!canInstall}
