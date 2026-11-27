@@ -112,9 +112,9 @@ body,
 }
 
 .sidebar-logo {
-    width: 44px;
-    height: 44px;
-    margin-bottom: 12px;
+    width: 56px;
+    height: 56px;
+    margin-bottom: 8px;
     cursor: pointer;
     transition: filter 0.2s;
     flex-shrink: 0;
@@ -288,6 +288,36 @@ body,
     height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+/* ── App branding ──────────────────────────────────────────────────────── */
+.app-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px 4px;
+}
+
+.app-brand-logo {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+}
+
+.app-brand-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+    color: var(--text);
+}
+
+.app-brand-tagline {
+    margin-top: 3px;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    color: var(--text4);
 }
 
 /* ── Hero ──────────────────────────────────────────────────────────────── */

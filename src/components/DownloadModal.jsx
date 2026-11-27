@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { IS_MOBILE } from "../utils/platform";
+import { IS_APK_MODE } from "../utils/platform";
 import { CloseIcon, DownloadIcon, SettingsIcon, SubtitlesIcon } from "./Icons";
 import {
   storage,
@@ -747,8 +747,8 @@ export default function DownloadModal({
                 <code className="download-url-code">{m3u8Url}</code>
               </div>
 
-              {/* ── Open in external player ───────────────────────────────── */}
-              {isElectron && (
+              {/* ── Open in external player (not in APK-mode builds) ─────── */}
+              {isElectron && !IS_APK_MODE && (
                 <div
                   style={{
                     padding: "12px 20px",
@@ -1115,7 +1115,7 @@ export default function DownloadModal({
               </div>
 
               {/* ── Downloader setup (desktop only) ──────────────────────── */}
-              {!IS_MOBILE && !downloader?.exists && (
+              {!IS_APK_MODE && !downloader?.exists && (
                 <div className="download-instructions">
                   <div className="download-instructions-title">
                     Set up Video Downloader

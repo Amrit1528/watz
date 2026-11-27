@@ -1,4 +1,4 @@
-import { IS_MOBILE } from "../utils/platform";
+import { IS_APK_MODE } from "../utils/platform";
 
 // Keyboard Shortcuts reference modal
 export default function KeyboardShortcutsModal({ onClose }) {
@@ -216,7 +216,7 @@ export default function KeyboardShortcutsModal({ onClose }) {
         </div>
 
         {/* GitHub support link — desktop only (APK has no external links) */}
-        {!IS_MOBILE && (
+        {!IS_APK_MODE && (
         <div
           style={{
             marginTop: 20,

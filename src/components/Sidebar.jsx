@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { imgUrl } from "../utils/api";
-import { IS_MOBILE } from "../utils/platform";
+import { IS_APK_MODE } from "../utils/platform";
 import { useSeasonalEvent } from "../components/seasonalEvents.jsx";
 import {
   MadCineAmaLogo,
@@ -132,7 +132,7 @@ export default function Sidebar({
         icon={<HistoryIcon />}
         label="Library & History"
       />
-      {!IS_MOBILE && (
+      {!IS_APK_MODE && (
         <SideBtn
           active={page === "downloads"}
           onClick={() => onNavigate("downloads")}
@@ -227,7 +227,7 @@ export default function Sidebar({
           icon={<HelpIcon />}
           label="Help & Shortcuts (?)"
         />
-        {!IS_MOBILE && (
+        {!IS_APK_MODE && (
           <SideBtn
             active={page === "settings"}
             onClick={() => onNavigate("settings")}
@@ -235,7 +235,7 @@ export default function Sidebar({
             label="Settings"
           />
         )}
-        {!IS_MOBILE && (
+        {!IS_APK_MODE && (
           <button
             className="sidebar-btn"
             onClick={() => window.electron?.quitApp?.()}

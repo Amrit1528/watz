@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1a1116"/>
+      <stop offset="1" stop-color="#07070a"/>
+    </linearGradient>
+    <linearGradient id="red" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff3b50"/>
+      <stop offset="1" stop-color="#b00616"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+  </defs>
+
+  <!-- Badge -->
+  <rect x="10" y="10" width="492" height="492" rx="96" fill="url(#bg)" stroke="url(#red)" stroke-width="10"/>
+  <rect x="26" y="26" width="460" height="460" rx="82" fill="none" stroke="#ff3b50" stroke-opacity="0.22" stroke-width="2"/>
+
+  <!-- Clapper -->
+  <g transform="translate(96 72)">
+    <path d="M0 48 L320 0 L320 66 L0 114 Z" fill="url(#red)"/>
+    <path d="M40 41 L80 35 L80 101 L40 107 Z" fill="#f7f7fa"/>
+    <path d="M120 28 L160 22 L160 88 L120 94 Z" fill="#f7f7fa"/>
+    <path d="M200 15 L240 9 L240 75 L200 81 Z" fill="#f7f7fa"/>
+    <path d="M280 3 L320 0 L320 64 L280 66 Z" fill="#f7f7fa"/>
+  </g>
+
+  <!-- Film frame -->
+  <rect x="96" y="176" width="320" height="150" rx="22" fill="#101014" stroke="url(#red)" stroke-width="6"/>
+  <g fill="#2b2b33">
+    <rect x="108" y="188" width="24" height="12" rx="3"/>
+    <rect x="160" y="188" width="24" height="12" rx="3"/>
+    <rect x="212" y="188" width="24" height="12" rx="3"/>
+    <rect x="264" y="188" width="24" height="12" rx="3"/>
+    <rect x="316" y="188" width="24" height="12" rx="3"/>
+    <rect x="108" y="302" width="24" height="12" rx="3"/>
+    <rect x="160" y="302" width="24" height="12" rx="3"/>
+    <rect x="212" y="302" width="24" height="12" rx="3"/>
+    <rect x="264" y="302" width="24" height="12" rx="3"/>
+    <rect x="316" y="302" width="24" height="12" rx="3"/>
+  </g>
+  <ellipse cx="256" cy="251" rx="66" ry="48" fill="#ff3b50" opacity="0.18" filter="url(#glow)"/>
+  <path d="M228 218 L228 284 L290 251 Z" fill="url(#red)"/>
+
+  <!-- Wordmark -->
+  <text x="256" y="386" text-anchor="middle" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="58" font-weight="900" letter-spacing="1">
+    <tspan fill="#ffffff">Mad</tspan><tspan fill="#ff3b50">Cine</tspan><tspan fill="#ffffff">Ama</tspan>
+  </text>
+  <text x="256" y="422" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="600" letter-spacing="2.2" fill="#9a9aa5">EVERYTHING YOU LOVE. ALL IN ONE PLACE.</text>
+</svg>

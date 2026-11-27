@@ -7,7 +7,7 @@ import {
   useCallback,
   useMemo,
 } from "react";
-import { IS_MOBILE } from "../utils/platform";
+import { IS_MOBILE, IS_APK_MODE } from "../utils/platform";
 import { lockPlayerOrientation } from "../utils/orientation";
 import MobileVideoPlayer from "../components/MobileVideoPlayer";
 import {
@@ -1314,7 +1314,7 @@ export default function MoviePage({
                 ))}
               </div>
             )}
-            {!IS_MOBILE && (
+            {!IS_APK_MODE && (
             <button
               className="player-overlay-btn"
               onClick={() =>
@@ -1444,7 +1444,7 @@ export default function MoviePage({
         />
       )}
 
-      {!IS_MOBILE && showDownload && (
+      {!IS_APK_MODE && showDownload && (
         <DownloadModal
           onClose={() => setShowDownload(false)}
           m3u8Url={m3u8Url}

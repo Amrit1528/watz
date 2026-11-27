@@ -18,7 +18,8 @@
     "dist:rpm": "cross-env ELECTRON_DIST=1 vite build && electron-builder --linux rpm --publish never",
     "dist:arch": "cross-env ELECTRON_DIST=1 vite build && electron-builder --linux pacman --publish never",
     "dist:appimage": "cross-env ELECTRON_DIST=1 vite build && electron-builder --linux AppImage --publish never",
-    "dist:win": "cross-env ELECTRON_DIST=1 vite build && electron-builder --win --publish never",
+    "dist:win": "cross-env ELECTRON_DIST=1 VITE_APK_FEATURES=1 node ./node_modules/vite/bin/vite.js build && electron-builder --win --publish never",
+    "dist:win:full": "cross-env ELECTRON_DIST=1 node ./node_modules/vite/bin/vite.js build && electron-builder --win --publish never",
     "dist:mac": "cross-env ELECTRON_DIST=1 vite build && electron-builder --mac --universal --publish never"
   },
   "dependencies": {
@@ -46,7 +47,8 @@
     "asar": true,
     "compression": "normal",
     "directories": {
-      "buildResources": "build"
+      "buildResources": "build",
+      "output": "release"
     },
     "files": [
       "dist/**/*",

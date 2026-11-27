@@ -50,19 +50,27 @@ export default function WindowTitlebar() {
         WebkitAppRegion: "drag",
       }}
     >
-      {/* App name / logo */}
+      {/* App logo / name */}
       <div
         style={{
           paddingLeft: 12,
           display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 8,
           flexGrow: 1,
           minWidth: 0,
         }}
       >
-        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: 2, color: "var(--text3)", fontFamily: "var(--font-display)", whiteSpace: "nowrap" }}>MadCineAma</span>
-        <span style={{ fontSize: 9, color: "var(--text4)", marginTop: 1, fontFamily: "var(--font-sans)", whiteSpace: "nowrap" }}>Everything You Love. All in One Place.</span>
+        <img
+          src="./logo.svg"
+          alt=""
+          style={{ width: 24, height: 24, display: "block", flexShrink: 0 }}
+        />
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", minWidth: 0 }}>
+          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: 2, color: "var(--text3)", fontFamily: "var(--font-display)", whiteSpace: "nowrap" }}>MadCineAma</span>
+          <span style={{ fontSize: 9, color: "var(--text4)", marginTop: 1, fontFamily: "var(--font-sans)", whiteSpace: "nowrap" }}>Everything You Love. All in One Place.</span>
+        </div>
       </div>
 
       {/* Window control buttons, NOT draggable */}

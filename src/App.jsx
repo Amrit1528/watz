@@ -10,6 +10,7 @@ import {
 import ErrorBoundary from "./components/ErrorBoundary";
 import KeyboardShortcutsModal from "./components/KeyboardShortcutsModal";
 import WindowTitlebar from "./components/WindowTitlebar";
+import { MadCineAmaLogo } from "./components/Icons";
 import { storage, secureStorage, STORAGE_KEYS } from "./utils/storage";
 import {
   applyAccentColor,
@@ -25,7 +26,7 @@ import {
   DEFAULT_TMDB_API_KEY,
 } from "./utils/api";
 import { clearAppCaches } from "./utils/storage";
-import { IS_MOBILE } from "./utils/platform";
+import { IS_MOBILE, IS_APK_MODE } from "./utils/platform";
 import { lockPlayerOrientation } from "./utils/orientation";
 import {
   readDiscordRpcSettings,
@@ -356,9 +357,9 @@ export default function App() {
     let mounted = true;
     secureStorage.get("apikey").then((val) => {
       if (!mounted) return;
-      // Mobile builds hide Settings, so provision a working key automatically.
+      // APK-mode builds hide Settings, so provision a working key automatically.
       let resolved = val;
-      if (!resolved && IS_MOBILE) {
+      if (!resolved && IS_APK_MODE) {
         resolved = DEFAULT_TMDB_API_KEY;
         secureStorage.set("apikey", resolved);
       }
@@ -1042,6 +1043,19 @@ export default function App() {
         />
 
         <div className="main">
+          {/* ── App branding ── */}
+          <div className="app-brand">
+            <div className="app-brand-logo">
+              <MadCineAmaLogo />
+            </div>
+            <div className="app-brand-text">
+              <div className="app-brand-title">MadCineAma</div>
+              <div className="app-brand-tagline">
+                Everything You Love. All in One Place.
+              </div>
+            </div>
+          </div>
+
           {/* ── API key status banner ── */}
           {/* Suspense boundary: lazy page chunks are fetched on first visit */}
           {apiKeyStatus === "invalid_token" && (
@@ -1161,7 +1175,7 @@ export default function App() {
                 onRemoveHistory={removeHistory}
               />
             )}
-            {page === "settings" && !IS_MOBILE && (
+            {page === "settings" && !IS_APK_MODE && (
               <SettingsPage
                 apiKey={effectiveApiKey}
                 onChangeApiKey={changeApiKey}
@@ -1169,7 +1183,7 @@ export default function App() {
                 initialSection={selected?.section}
               />
             )}
-            {page === "downloads" && !IS_MOBILE && (
+            {page === "downloads" && !IS_APK_MODE && (
               <DownloadsPage
                 downloads={downloads}
                 onDeleteDownload={handleDeleteDownload}

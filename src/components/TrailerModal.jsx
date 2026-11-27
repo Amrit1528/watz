@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { CloseIcon, ExternalLinkIcon } from "./Icons";
 import { storage } from "../utils/storage";
-import { IS_MOBILE } from "../utils/platform";
+import { IS_APK_MODE } from "../utils/platform";
 import { lockPlayerOrientation } from "../utils/orientation";
 
 export const DEFAULT_INVIDIOUS_BASE = "https://inv.nadeko.net";
@@ -172,7 +172,7 @@ export default function TrailerModal({ trailerKey, title, onClose }) {
             🎬 {title} — Official Trailer
           </span>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            {!IS_MOBILE && (
+            {!IS_APK_MODE && (
               <button
                 onClick={openInBrowser}
                 title="Open in browser"

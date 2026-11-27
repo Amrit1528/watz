@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { IS_MOBILE } from "../utils/platform";
+import { IS_APK_MODE } from "../utils/platform";
 
 // ── Image component that proxies through Electron main process ────────────────
 // Fixes Codeberg (and other external) images being blocked by Electron's CSP.
@@ -102,7 +102,7 @@ function inlineFormat(text) {
     } else if (raw.startsWith("[")) {
       const mm = raw.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
       if (mm) {
-        if (IS_MOBILE) parts.push(<span key={k++}>{mm[1]}</span>);
+        if (IS_APK_MODE) parts.push(<span key={k++}>{mm[1]}</span>);
         else
           parts.push(
             <a
@@ -124,7 +124,7 @@ function inlineFormat(text) {
       }
     } else if (raw.startsWith("@")) {
       const username = raw.slice(1);
-      if (IS_MOBILE) parts.push(<span key={k++}>{raw}</span>);
+      if (IS_APK_MODE) parts.push(<span key={k++}>{raw}</span>);
       else
         parts.push(
           <a
@@ -153,7 +153,7 @@ function inlineFormat(text) {
         if (prMatch) label = `#${prMatch[2]}`;
         else label = u.hostname.replace(/^www\./, "") + u.pathname;
       } catch {}
-      if (IS_MOBILE) parts.push(<span key={k++}>{label}</span>);
+      if (IS_APK_MODE) parts.push(<span key={k++}>{label}</span>);
       else
         parts.push(
           <a
@@ -608,7 +608,7 @@ export default function UpdateModal({
                     </span>
                   </>
                 )}
-                {!IS_MOBILE && (
+                {!IS_APK_MODE && (
                   <a
                     href={url}
                     onClick={(e) => {
@@ -724,7 +724,7 @@ export default function UpdateModal({
           )}
 
           {/* No format detected warning — desktop only */}
-          {!IS_MOBILE && !format && phase === "idle" && (
+          {!IS_APK_MODE && !format && phase === "idle" && (
             <div
               style={{ fontSize: 12, color: "var(--text3)", marginBottom: 12 }}
             >
@@ -796,7 +796,7 @@ export default function UpdateModal({
               style={{ fontSize: 13, color: "var(--red)", marginBottom: 12 }}
             >
               ✕ {errorMsg}
-              {!IS_MOBILE && (
+              {!IS_APK_MODE && (
                 <span style={{ marginLeft: 10 }}>
                   <a
                     href={url}
@@ -831,7 +831,7 @@ export default function UpdateModal({
             </button>
             {phase === "idle" && (
               <>
-                {!IS_MOBILE && (
+                {!IS_APK_MODE && (
                   <a
                     href={url}
                     onClick={(e) => {
